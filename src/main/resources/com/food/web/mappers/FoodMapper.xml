@@ -1,0 +1,42 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.food.web.mappers.FoodMapper">
+    <insert id="insertFood"
+            parameterType="com.food.web.food.FoodDTO">
+        insert seq, product_cls_code productClsCode,product_cls_name productClsName ,category_code categoryCode ,category_name categoryName ,productno,lastest_day lastestDay, product_name productName, item_name itemName,unit,day1,dpr1,day2,dpr2,day3,dpr3,day4,dpr4,direction,price into food
+        values (#{seq},#{product_cls_code},#{product_cls_name},#{category_code},#{category_name},#{productno},#{lastest_day},#{product_name},#{item_name},#{unit},#{day1},#{dpr1},#{day2},#{dpr2},#{day3},#{dpr3},#{day4},#{dpr4},#{direction},#{price})
+    </insert>
+
+    <update id="updateFood"
+            parameterType="com.food.web.food.FoodDTO">
+        update set item_name = #{item_name} from food
+        where seq like #{seq}
+    </update>
+
+    <delete id="deleteFood"
+            parameterType="com.food.web.food.FoodDTO">
+        delete from food where seq like #{seq}
+    </delete>
+    <select id="selectFoods" resultType="com.food.web.food.FoodDTO"
+            parameterType="com.food.web.proxy.Pager">
+        select seq, product_cls_code productClsCode,product_cls_name productClsName ,category_code categoryCode ,category_name categoryName ,productno,lastest_day lastestDay, product_name productName, item_name itemName,unit,day1,dpr1,day2,dpr2,day3,dpr3,day4,dpr4,direction,price
+        from food
+        <if test="searchWord !=null">
+            where item_name like '%${searchWord}%'
+        </if>
+        limit #{rowStart}, #{pageSize}
+
+
+    </select>
+    <select id="selectFood" resultType="com.food.web.food.FoodDTO"
+            parameterType="String">
+      select seq,productClsCode product_cls_code,productClsName product_cls_name,categoryCode category_code,categoryName category_name,productno,lastest_day,productName product_name,itemName item_name,unit,day1,dpr1,day2,dpr2,day3,dpr3,day4,dpr4,direction,price
+      from food
+       where seq = #{value}
+       </select>
+    <select id="count" resultType="int">
+      select count(*)
+      from food
+    </select>
+</mapper>
